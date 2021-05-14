@@ -1,0 +1,5 @@
+rootProject.name = "Movie Time"
+include ':app'
+include ':domain'
+include ':data'
+include ':di'
