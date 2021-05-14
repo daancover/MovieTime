@@ -1,24 +1,19 @@
 package com.coverlabs.data.mapper
 
+import com.coverlabs.GetMovieDetailsQuery
 import com.coverlabs.GetTopFiveMoviesQuery
+import com.coverlabs.SearchMoviesQuery
 import com.coverlabs.domain.model.Cast
 import com.coverlabs.domain.model.Director
 import com.coverlabs.domain.model.Movie
+import com.coverlabs.domain.model.MovieDetails
 
-fun List<GetTopFiveMoviesQuery.Movie?>.toViewMovieList(): List<Movie> {
-    val list = mutableListOf<Movie>()
-    forEach { movie ->
-        movie?.let {
-            list.add(
-                it.toViewMovie()
-            )
-        }
-    }
+fun GetTopFiveMoviesQuery.Movie.map() = Movie(
+    id,
+    posterPath
+)
 
-    return list
-}
-
-fun GetTopFiveMoviesQuery.Movie.toViewMovie() = Movie(
+fun GetMovieDetailsQuery.Movie.map() = MovieDetails(
     id,
     title,
     voteAverage,
@@ -26,30 +21,24 @@ fun GetTopFiveMoviesQuery.Movie.toViewMovie() = Movie(
     genres,
     posterPath,
     overview,
-    cast.toViewCastList(),
-    director.toViewDirector()
+    cast.map {
+        it.map()
+    },
+    director.map()
 )
 
-fun List<GetTopFiveMoviesQuery.Cast?>.toViewCastList(): List<Cast> {
-    val list = mutableListOf<Cast>()
-    forEach { artist ->
-        artist?.let {
-            list.add(
-                it.toViewCast()
-            )
-        }
-    }
-
-    return list
-}
-
-fun GetTopFiveMoviesQuery.Cast.toViewCast(): Cast = Cast(
+fun GetMovieDetailsQuery.Cast.map(): Cast = Cast(
     profilePath,
     name,
-    character,
-    order
+    character
 )
 
-fun GetTopFiveMoviesQuery.Director.toViewDirector(): Director {
+fun GetMovieDetailsQuery.Director.map(): Director {
     return Director(id, name)
 }
+
+
+fun SearchMoviesQuery.Movie.map() = Movie(
+    id,
+    posterPath
+)

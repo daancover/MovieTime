@@ -1,22 +1,7 @@
 # Write your query or mutation here
-query GetTopFiveMovies($orderBy: String) {
-    movies(orderBy: $orderBy, sort: DESC,limit: 5) {
+query GetTopFiveMovies {
+    movies(orderBy: "popularity", sort: DESC, limit: 5) {
         id,
-        title,
-        voteAverage,
-        voteCount,
-        genres,
-        posterPath,
-        overview,
-        cast {
-            profilePath,
-            name,
-            character,
-            order
-        },
-        director {
-            id,
-            name
-        }
+        posterPath
     }
 }

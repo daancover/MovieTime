@@ -1,0 +1,22 @@
+# Write your query or mutation here
+query GetMovieDetails($id: Int!) {
+    movie(id: $id) {
+        id,
+        title,
+        voteAverage,
+        voteCount,
+        genres,
+        posterPath,
+        overview,
+        cast {
+            profilePath,
+            name,
+            character,
+            order
+        },
+        director {
+            id,
+            name
+        }
+    }
+}

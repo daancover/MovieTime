@@ -56,7 +56,7 @@ private fun provideApolloClient(
     okHttpClient: OkHttpClient
 ): ApolloClient {
     return ApolloClient.builder()
-        //.okHttpClient(okHttpClient)
-        .serverUrl(handler.get(handler.b())) //"https://podium-fe-challenge-2021.netlify.app/.netlify/functions/graphql"
+        .okHttpClient(okHttpClient)
+        .serverUrl(handler.get(handler.b()))
         .build()
 }

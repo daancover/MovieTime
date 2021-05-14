@@ -12,8 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieTime">
-
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.activity.GenreActivity"></activity>
+        <activity android:name=".ui.activity.MovieDetailActivity"></activity>
+        <activity android:name=".ui.activity.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,4 +22,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

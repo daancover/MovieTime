@@ -25,4 +25,8 @@ class MovieTimeApplication : Application() {
             )
         }
     }
+
+    companion object {
+        const val GRID_LAYOUT_COLUMNS = 2
+    }
 }

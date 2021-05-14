@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Movie Time</string>
+
+    <string name="title_home">Top 5</string>
+    <string name="title_search">Search</string>
+    <string name="title_genre">Genres</string>
+
+    <string name="search_hint">Search</string>
 </resources>
