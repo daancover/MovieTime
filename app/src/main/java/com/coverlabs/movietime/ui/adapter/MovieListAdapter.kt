@@ -10,9 +10,11 @@ import com.coverlabs.movietime.R
 import com.coverlabs.movietime.databinding.ItemMovieBinding
 
 class MovieListAdapter(
-    private val list: List<Movie>,
+    private val list: MutableList<Movie>,
+    private val isFavorite: MutableList<Boolean>,
     private val isPagerAdapter: Boolean,
-    private val onClickListener: (Int) -> Unit
+    private val onClickListener: (Int) -> Unit,
+    private val onFavoriteStatusChange: (Boolean, Movie) -> Unit
 ) : RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -32,12 +34,52 @@ class MovieListAdapter(
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.bind(
             list[position],
-            onClickListener
+            isFavorite[position],
+            onClickListener,
+            onFavoriteStatusChange
         )
     }
 
     override fun getItemCount(): Int {
         return list.size
+    }
+
+    fun updateFavoriteStatus(isFavorite: Boolean, movie: Movie) {
+        getMovieIndex(movie).takeIf { index -> index >= 0 }?.let { index ->
+            this.isFavorite[index] = isFavorite
+            notifyItemChanged(index)
+        }
+    }
+
+    fun changeFavoriteStatus(isFavorite: Boolean, movie: Movie) {
+        if (isFavorite) {
+            addItem(movie)
+        } else {
+            removeItem(movie)
+        }
+    }
+
+    private fun addItem(movie: Movie) {
+        list.add(movie)
+        isFavorite.add(true)
+        notifyItemInserted(list.size - 1)
+    }
+
+    private fun removeItem(movie: Movie) {
+        getMovieIndex(movie).takeIf { index -> index >= 0 }?.let { index ->
+            list.removeAt(index)
+            notifyItemRemoved(index)
+        }
+    }
+
+    private fun getMovieIndex(movie: Movie): Int {
+        var indexToRemove: Int = -1
+        list.forEachIndexed { index, it ->
+            if (it.id == movie.id) {
+                indexToRemove = index
+            }
+        }
+        return indexToRemove
     }
 
     class MovieViewHolder(
@@ -46,7 +88,9 @@ class MovieListAdapter(
 
         fun bind(
             movie: Movie,
-            onClickListener: (Int) -> Unit
+            isFavorite: Boolean,
+            onClickListener: (Int) -> Unit,
+            onFavoriteStatusChange: (Boolean, Movie) -> Unit
         ) {
             with(binding) {
                 Glide
@@ -58,6 +102,12 @@ class MovieListAdapter(
 
                 root.setOnClickListener {
                     onClickListener(movie.id)
+                }
+
+                cbFavorite.setOnCheckedChangeListener(null)
+                cbFavorite.isChecked = isFavorite
+                cbFavorite.setOnCheckedChangeListener { _, isChecked ->
+                    onFavoriteStatusChange(isChecked, movie)
                 }
             }
         }

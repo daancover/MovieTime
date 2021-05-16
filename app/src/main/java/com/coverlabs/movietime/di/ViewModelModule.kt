@@ -8,13 +8,15 @@ val viewModelModule = module {
 
     viewModel {
         MovieDetailViewModel(
-            movieRepository = get()
+            movieRepository = get(),
+            storageRepository = get()
         )
     }
 
     viewModel {
         HomeViewModel(
-            movieRepository = get()
+            movieRepository = get(),
+            storageRepository = get()
         )
     }
 
@@ -26,13 +28,15 @@ val viewModelModule = module {
 
     viewModel {
         SearchViewModel(
-            movieRepository = get()
+            movieRepository = get(),
+            storageRepository = get()
         )
     }
 
     viewModel {
         GenreViewModel(
-            movieRepository = get()
+            movieRepository = get(),
+            storageRepository = get()
         )
     }
 }

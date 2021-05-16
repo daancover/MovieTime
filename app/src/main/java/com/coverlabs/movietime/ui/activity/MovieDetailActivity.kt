@@ -2,16 +2,21 @@ package com.coverlabs.movietime.ui.activity
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.coverlabs.domain.model.MovieDetails
 import com.coverlabs.movietime.databinding.ActivityMovieDetailBinding
 import com.coverlabs.movietime.viewmodel.MovieDetailViewModel
 import com.coverlabs.movietime.viewmodel.base.State
 import com.coverlabs.movietime.viewmodel.base.State.Status.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.security.MessageDigest
 
 class MovieDetailActivity : AppCompatActivity() {
 
@@ -54,11 +59,41 @@ class MovieDetailActivity : AppCompatActivity() {
 
     private fun setupMovieDetails(movieDetails: MovieDetails) {
         with(binding) {
+            toolbar.title = movieDetails.title
+
             Glide
                 .with(root)
                 .load(movieDetails.posterPath)
+                .transform(CutOffLogo())
                 .into(ivPoster)
+
+            ivPoster.setOnClickListener {
+                // TODO SHOW POSTER DIALOG
+                Toast.makeText(
+                    this@MovieDetailActivity,
+                    "Poster clicked!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
+    }
+
+    class CutOffLogo : BitmapTransformation() {
+        override fun transform(
+            pool: BitmapPool,
+            toTransform: Bitmap,
+            outWidth: Int,
+            outHeight: Int
+        ): Bitmap =
+            Bitmap.createBitmap(
+                toTransform,
+                0,
+                0,
+                toTransform.width,
+                toTransform.height - (toTransform.height / 2)
+            )
+
+        override fun updateDiskCacheKey(messageDigest: MessageDigest) {}
     }
 
     companion object {

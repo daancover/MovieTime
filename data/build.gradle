@@ -57,6 +57,9 @@ dependencies {
     implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
     implementation "com.apollographql.apollo:apollo-coroutines-support:$apollo_version"
 
+    // Gson
+    implementation "com.google.code.gson:gson:$gson_version"
+
     // Unit Tests
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-inline:$mockito_core_version"

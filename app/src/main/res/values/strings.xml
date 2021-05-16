@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">Movie Time</string>
 
-    <string name="title_home">Top 5</string>
+    <string name="title_home">Home</string>
     <string name="title_search">Search</string>
     <string name="title_genre">Genres</string>
+
+    <string name="home_top_five_title">Top 5</string>
+    <string name="home_favorites_title">Favorites</string>
+    <string name="home_no_favorites_message">You still don\'t have any Favorite movies! Touch the Heart icon to add your favorite movies to this quick list!</string>
 
     <string name="search_hint">Search</string>
 </resources>

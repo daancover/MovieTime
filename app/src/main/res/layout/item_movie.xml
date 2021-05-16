@@ -1,20 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:foreground="?attr/selectableItemBackground"
-    app:cardCornerRadius="@dimen/card_corner_radius">
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/ivPoster"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:clickable="false"
-        android:focusable="false"
-        android:importantForAccessibility="no"
-        android:src="@drawable/img_movie_placeholder"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="H,3:1"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivPoster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:clickable="false"
+            android:focusable="false"
+            android:src="@drawable/img_movie_placeholder" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/cbFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/cb_favorite"
+        android:elevation="@dimen/cardview_default_elevation"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:paddingStart="@dimen/margin_small"
+        android:paddingTop="@dimen/margin_default"
+        android:paddingEnd="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_default"
+        app:layout_constraintEnd_toEndOf="@id/cardView"
+        app:layout_constraintTop_toTopOf="@id/cardView" />
+</androidx.constraintlayout.widget.ConstraintLayout>

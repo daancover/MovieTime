@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.coverlabs.movietime.extension.dp
 
-class MovieListItemDecoration() : RecyclerView.ItemDecoration() {
+class HorizontalListItemDecoration() : RecyclerView.ItemDecoration() {
     override fun getItemOffsets(
         outRect: Rect,
         view: View,
@@ -17,12 +17,15 @@ class MovieListItemDecoration() : RecyclerView.ItemDecoration() {
         outRect.top = 8.dp()
         outRect.bottom = 8.dp()
 
-        if (position % 2 == 0) {
+        if (position == 0) {
             outRect.left = 16.dp()
             outRect.right = 8.dp()
-        } else {
+        } else if (position == parent.childCount - 1) {
             outRect.left = 8.dp()
             outRect.right = 16.dp()
+        } else {
+            outRect.left = 8.dp()
+            outRect.right = 8.dp()
         }
     }
 }
