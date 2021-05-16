@@ -1,4 +1,4 @@
-package com.coverlabs.di
+package com.coverlabs.di.module
 
 import com.apollographql.apollo.ApolloClient
 import com.coverlabs.data.storage.EncryptionHandler

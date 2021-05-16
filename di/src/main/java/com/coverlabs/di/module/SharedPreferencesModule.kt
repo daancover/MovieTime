@@ -1,4 +1,4 @@
-package com.coverlabs.di
+package com.coverlabs.di.module
 
 import android.app.Application
 import android.content.SharedPreferences

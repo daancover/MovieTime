@@ -1,23 +1,35 @@
 package com.coverlabs.movietime.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.Lifecycle.Event.ON_CREATE
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.viewModelScope
+import com.coverlabs.di.error.ErrorHandler
 import com.coverlabs.domain.model.Movie
 import com.coverlabs.domain.repository.MovieRepository
+import com.coverlabs.movietime.viewmodel.base.BaseViewModel
+import com.coverlabs.movietime.viewmodel.base.StateMutableLiveData
 import kotlinx.coroutines.launch
 
-class SearchViewModel(private val movieRepository: MovieRepository) : ViewModel() {
+class SearchViewModel(private val movieRepository: MovieRepository) : BaseViewModel() {
 
-    private val movieList = MutableLiveData<List<Movie>>()
+    private val movieList = StateMutableLiveData<List<Movie>>(true)
 
-    fun onMovieListResult(): LiveData<List<Movie>> = movieList
+    private val searchError = ErrorHandler { error ->
+        movieList.postError(error)
+    }
 
-    fun searchMovie(title: String) {
-        viewModelScope.launch {
+    fun onMovieListResult() = movieList.toLiveData()
+
+    @OnLifecycleEvent(ON_CREATE)
+    fun getAllMovies() {
+        searchMovie()
+    }
+
+    fun searchMovie(title: String = "") {
+        viewModelScope.launch(searchError.handler) {
+            movieList.postLoading()
             val movies = movieRepository.searchMovies(title = title)
-            movieList.postValue(movies)
+            movieList.postSuccess(movies)
         }
     }
 }

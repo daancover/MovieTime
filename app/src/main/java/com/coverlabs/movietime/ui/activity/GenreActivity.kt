@@ -12,6 +12,8 @@ import com.coverlabs.movietime.databinding.ActivityGenreBinding
 import com.coverlabs.movietime.ui.adapter.MovieListAdapter
 import com.coverlabs.movietime.ui.decoration.MovieListItemDecoration
 import com.coverlabs.movietime.viewmodel.GenreViewModel
+import com.coverlabs.movietime.viewmodel.base.State
+import com.coverlabs.movietime.viewmodel.base.State.Status.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GenreActivity : AppCompatActivity() {
@@ -28,13 +30,29 @@ class GenreActivity : AppCompatActivity() {
     }
 
     private fun observeEvents() {
+        lifecycle.addObserver(viewModel)
         val genre = intent.getStringExtra(ARG_GENRE).orEmpty()
         viewModel.onMovieListResult().observe(this, handleMovieList())
         viewModel.searchMovie(genre)
     }
 
-    private fun handleMovieList() = Observer<List<Movie>> {
-        setupMovieList(it)
+    private fun handleMovieList() = Observer<State<List<Movie>>> {
+        when (it.status) {
+            LOADING -> {
+                // TODO LOADING
+            }
+            SUCCESS -> {
+                it.dataIfNotHandled?.let { movieList ->
+                    setupMovieList(movieList)
+                }
+            }
+            ERROR -> {
+                // TODO ERROR
+            }
+            else -> {
+                // do nothing
+            }
+        }
     }
 
     private fun setupMovieList(movieList: List<Movie>) {
@@ -43,10 +61,10 @@ class GenreActivity : AppCompatActivity() {
             rvMovieList.layoutManager = GridLayoutManager(context, GRID_LAYOUT_COLUMNS)
 
             if (rvMovieList.itemDecorationCount == 0) {
-                rvMovieList.addItemDecoration(MovieListItemDecoration(resources))
+                rvMovieList.addItemDecoration(MovieListItemDecoration())
             }
 
-            rvMovieList.adapter = MovieListAdapter(movieList) {
+            rvMovieList.adapter = MovieListAdapter(movieList, false) {
                 startActivity(
                     MovieDetailActivity.newIntent(context, it)
                 )

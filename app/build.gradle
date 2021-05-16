@@ -55,6 +55,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
+    implementation "androidx.viewpager2:viewpager2:$view_pager_version"
 
     // Koin
     implementation "io.insert-koin:koin-android:$koin_version"

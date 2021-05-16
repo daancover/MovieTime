@@ -1,23 +1,28 @@
 package com.coverlabs.movietime.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.coverlabs.di.error.ErrorHandler
 import com.coverlabs.domain.model.MovieDetails
 import com.coverlabs.domain.repository.MovieRepository
+import com.coverlabs.movietime.viewmodel.base.BaseViewModel
+import com.coverlabs.movietime.viewmodel.base.StateMutableLiveData
 import kotlinx.coroutines.launch
 
-class MovieDetailViewModel(private val movieRepository: MovieRepository) : ViewModel() {
+class MovieDetailViewModel(private val movieRepository: MovieRepository) : BaseViewModel() {
 
-    private val movieDetails = MutableLiveData<MovieDetails>()
+    private val movieDetails = StateMutableLiveData<MovieDetails>()
 
-    fun onMovieDetailsResult(): LiveData<MovieDetails> = movieDetails
+    private val movieDetailsError = ErrorHandler { error ->
+        movieDetails.postError(error)
+    }
 
-    fun getMovieDetails(id: Int = 775996) {
-        viewModelScope.launch {
+    fun onMovieDetailsResult() = movieDetails.toLiveData()
+
+    fun getMovieDetails(id: Int) {
+        viewModelScope.launch(movieDetailsError.handler) {
+            movieDetails.postLoading()
             val details = movieRepository.getMovieDetails(id)
-            movieDetails.postValue(details)
+            movieDetails.postSuccess(details)
         }
     }
 }

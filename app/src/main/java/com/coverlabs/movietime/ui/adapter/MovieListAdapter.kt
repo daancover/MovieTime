@@ -2,6 +2,7 @@ package com.coverlabs.movietime.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.coverlabs.domain.model.Movie
@@ -10,6 +11,7 @@ import com.coverlabs.movietime.databinding.ItemMovieBinding
 
 class MovieListAdapter(
     private val list: List<Movie>,
+    private val isPagerAdapter: Boolean,
     private val onClickListener: (Int) -> Unit
 ) : RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>() {
 
@@ -19,6 +21,10 @@ class MovieListAdapter(
             parent,
             false
         )
+
+        if (isPagerAdapter) {
+            binding.root.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+        }
 
         return MovieViewHolder(binding)
     }

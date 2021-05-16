@@ -11,6 +11,8 @@ import com.coverlabs.movietime.databinding.FragmentGenreBinding
 import com.coverlabs.movietime.ui.activity.GenreActivity
 import com.coverlabs.movietime.ui.adapter.GenreListAdapter
 import com.coverlabs.movietime.viewmodel.GenreListViewModel
+import com.coverlabs.movietime.viewmodel.base.State
+import com.coverlabs.movietime.viewmodel.base.State.Status.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GenreListFragment : BaseFragment() {
@@ -33,12 +35,27 @@ class GenreListFragment : BaseFragment() {
     }
 
     override fun observeEvents() {
+        lifecycle.addObserver(viewModel)
         viewModel.onGenreListResult().observe(viewLifecycleOwner, handleGenreList())
-        viewModel.getGenreList()
     }
 
-    private fun handleGenreList() = Observer<List<String>> {
-        setupGenreList(it)
+    private fun handleGenreList() = Observer<State<List<String>>> {
+        when (it.status) {
+            LOADING -> {
+                // TODO LOADING
+            }
+            SUCCESS -> {
+                it.dataIfNotHandled?.let { genreList ->
+                    setupGenreList(genreList)
+                }
+            }
+            ERROR -> {
+                // TODO ERROR
+            }
+            else -> {
+                // do nothing
+            }
+        }
     }
 
     private fun setupGenreList(genreList: List<String>) {

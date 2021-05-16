@@ -1,4 +1,4 @@
-package com.coverlabs.di
+package com.coverlabs.di.module
 
 import com.coverlabs.data.datasource.MovieDataSource
 import com.coverlabs.domain.repository.MovieRepository

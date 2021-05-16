@@ -9,6 +9,8 @@ import com.bumptech.glide.Glide
 import com.coverlabs.domain.model.MovieDetails
 import com.coverlabs.movietime.databinding.ActivityMovieDetailBinding
 import com.coverlabs.movietime.viewmodel.MovieDetailViewModel
+import com.coverlabs.movietime.viewmodel.base.State
+import com.coverlabs.movietime.viewmodel.base.State.Status.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieDetailActivity : AppCompatActivity() {
@@ -25,13 +27,29 @@ class MovieDetailActivity : AppCompatActivity() {
     }
 
     private fun observeEvents() {
+        lifecycle.addObserver(viewModel)
         val movieId = intent.getIntExtra(ARGS_MOVIE_ID, 0)
         viewModel.onMovieDetailsResult().observe(this, handleMovieDetails())
         viewModel.getMovieDetails(movieId)
     }
 
-    private fun handleMovieDetails() = Observer<MovieDetails> {
-        setupMovieDetails(it)
+    private fun handleMovieDetails() = Observer<State<MovieDetails>> {
+        when (it.status) {
+            LOADING -> {
+                // TODO LOADING
+            }
+            SUCCESS -> {
+                it.dataIfNotHandled?.let { movieDetails ->
+                    setupMovieDetails(movieDetails)
+                }
+            }
+            ERROR -> {
+                // TODO ERROR
+            }
+            else -> {
+                // do nothing
+            }
+        }
     }
 
     private fun setupMovieDetails(movieDetails: MovieDetails) {

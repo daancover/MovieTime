@@ -12,6 +12,7 @@ ext {
     lifecycle_version = "2.3.1"
     security_version = "1.1.0-alpha03"
     navigation_version = "2.3.5"
+    view_pager_version = "1.0.0"
 
     // Apollo
     apollo_version = "2.5.6"

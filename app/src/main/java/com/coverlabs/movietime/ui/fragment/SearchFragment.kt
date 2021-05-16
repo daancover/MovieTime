@@ -14,6 +14,8 @@ import com.coverlabs.movietime.ui.activity.MovieDetailActivity
 import com.coverlabs.movietime.ui.adapter.MovieListAdapter
 import com.coverlabs.movietime.ui.decoration.MovieListItemDecoration
 import com.coverlabs.movietime.viewmodel.SearchViewModel
+import com.coverlabs.movietime.viewmodel.base.State
+import com.coverlabs.movietime.viewmodel.base.State.Status.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : BaseFragment() {
@@ -35,7 +37,8 @@ class SearchFragment : BaseFragment() {
         with(binding) {
             etSearch.doAfterTextChanged {
                 it?.let { text ->
-                    if (text.length >= 3) {
+                    if (text.length >= 2) {
+                        // TODO ADD DELAY
                         viewModel.searchMovie(it.toString())
                     }
                 }
@@ -44,11 +47,27 @@ class SearchFragment : BaseFragment() {
     }
 
     override fun observeEvents() {
+        lifecycle.addObserver(viewModel)
         viewModel.onMovieListResult().observe(viewLifecycleOwner, handleMovieList())
     }
 
-    private fun handleMovieList() = Observer<List<Movie>> {
-        setupMovieList(it)
+    private fun handleMovieList() = Observer<State<List<Movie>>> {
+        when (it.status) {
+            LOADING -> {
+                // TODO LOADING
+            }
+            SUCCESS -> {
+                it.dataIfNotHandled?.let { movieList ->
+                    setupMovieList(movieList)
+                }
+            }
+            ERROR -> {
+                // TODO ERROR
+            }
+            else -> {
+                // do nothing
+            }
+        }
     }
 
     private fun setupMovieList(movieList: List<Movie>) {
@@ -56,10 +75,10 @@ class SearchFragment : BaseFragment() {
             rvMovieList.layoutManager = GridLayoutManager(context, GRID_LAYOUT_COLUMNS)
 
             if (rvMovieList.itemDecorationCount == 0) {
-                rvMovieList.addItemDecoration(MovieListItemDecoration(resources))
+                rvMovieList.addItemDecoration(MovieListItemDecoration())
             }
 
-            rvMovieList.adapter = MovieListAdapter(movieList) {
+            rvMovieList.adapter = MovieListAdapter(movieList, false) {
                 startActivity(
                     MovieDetailActivity.newIntent(requireContext(), it)
                 )

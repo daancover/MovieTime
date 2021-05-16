@@ -5,14 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import com.coverlabs.domain.model.Movie
-import com.coverlabs.movietime.MovieTimeApplication.Companion.GRID_LAYOUT_COLUMNS
 import com.coverlabs.movietime.databinding.FragmentHomeBinding
+import com.coverlabs.movietime.extension.setupCarousel
+import com.coverlabs.movietime.extension.setupSideTouchEvent
 import com.coverlabs.movietime.ui.activity.MovieDetailActivity
 import com.coverlabs.movietime.ui.adapter.MovieListAdapter
-import com.coverlabs.movietime.ui.decoration.MovieListItemDecoration
 import com.coverlabs.movietime.viewmodel.HomeViewModel
+import com.coverlabs.movietime.viewmodel.base.State
+import com.coverlabs.movietime.viewmodel.base.State.Status.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : BaseFragment() {
@@ -35,26 +36,40 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun observeEvents() {
+        lifecycle.addObserver(viewModel)
         viewModel.onMovieListResult().observe(viewLifecycleOwner, handleMovieList())
-        viewModel.getTopFiveMovies()
     }
 
-    private fun handleMovieList() = Observer<List<Movie>> {
-        setupMovieList(it)
+    private fun handleMovieList() = Observer<State<List<Movie>>> {
+        when (it.status) {
+            LOADING -> {
+                // TODO LOADING
+            }
+            SUCCESS -> {
+                it.dataIfNotHandled?.let { movieList ->
+                    setupMovieList(movieList)
+                }
+            }
+            ERROR -> {
+                // TODO ERROR
+            }
+            else -> {
+                // do nothing
+            }
+        }
     }
 
     private fun setupMovieList(movieList: List<Movie>) {
         with(binding) {
-            rvTopFive.layoutManager = GridLayoutManager(context, GRID_LAYOUT_COLUMNS)
+            vpTopFive.apply {
+                adapter = MovieListAdapter(movieList, true) {
+                    startActivity(
+                        MovieDetailActivity.newIntent(requireContext(), it)
+                    )
+                }
 
-            if (rvTopFive.itemDecorationCount == 0) {
-                rvTopFive.addItemDecoration(MovieListItemDecoration(resources))
-            }
-
-            rvTopFive.adapter = MovieListAdapter(movieList) {
-                startActivity(
-                    MovieDetailActivity.newIntent(requireContext(), it)
-                )
+                setupCarousel()
+                setupSideTouchEvent()
             }
         }
     }
