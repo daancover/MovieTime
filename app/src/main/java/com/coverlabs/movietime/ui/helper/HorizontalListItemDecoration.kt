@@ -1,11 +1,11 @@
-package com.coverlabs.movietime.ui.decoration
+package com.coverlabs.movietime.ui.helper
 
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.coverlabs.movietime.extension.dp
 
-class HorizontalListItemDecoration() : RecyclerView.ItemDecoration() {
+class HorizontalListItemDecoration : RecyclerView.ItemDecoration() {
     override fun getItemOffsets(
         outRect: Rect,
         view: View,

@@ -10,7 +10,7 @@ import com.coverlabs.domain.model.Movie
 import com.coverlabs.movietime.MovieTimeApplication.Companion.GRID_LAYOUT_COLUMNS
 import com.coverlabs.movietime.databinding.ActivityGenreBinding
 import com.coverlabs.movietime.ui.adapter.MovieListAdapter
-import com.coverlabs.movietime.ui.decoration.GridItemDecoration
+import com.coverlabs.movietime.ui.helper.GridItemDecoration
 import com.coverlabs.movietime.viewmodel.GenreViewModel
 import com.coverlabs.movietime.viewmodel.base.State
 import com.coverlabs.movietime.viewmodel.base.State.Status.*

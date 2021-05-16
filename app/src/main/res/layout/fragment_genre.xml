@@ -6,14 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.HomeFragment">
 
+    <TextView
+        android:id="@+id/tvGenreTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_large"
+        android:text="@string/genre_title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvGenreList"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_default"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:itemCount="10" />
+        app:layout_constraintTop_toBottomOf="@id/tvGenreTitle"
+        tools:itemCount="10"
+        tools:listitem="@layout/item_genre" />
 </androidx.constraintlayout.widget.ConstraintLayout>

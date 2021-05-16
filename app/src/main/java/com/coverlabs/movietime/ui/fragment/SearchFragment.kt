@@ -1,6 +1,8 @@
 package com.coverlabs.movietime.ui.fragment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +15,7 @@ import com.coverlabs.movietime.MovieTimeApplication.Companion.GRID_LAYOUT_COLUMN
 import com.coverlabs.movietime.databinding.FragmentSearchBinding
 import com.coverlabs.movietime.ui.activity.MovieDetailActivity
 import com.coverlabs.movietime.ui.adapter.MovieListAdapter
-import com.coverlabs.movietime.ui.decoration.GridItemDecoration
+import com.coverlabs.movietime.ui.helper.GridItemDecoration
 import com.coverlabs.movietime.viewmodel.SearchViewModel
 import com.coverlabs.movietime.viewmodel.base.State
 import com.coverlabs.movietime.viewmodel.base.State.Status.*
@@ -35,6 +37,9 @@ class SearchFragment : BaseFragment() {
     }
 
     override fun setupView() {
+        val handler = Handler(Looper.getMainLooper())
+        var runnable: Runnable? = null
+
         with(binding) {
             var lengthBeforeChange = 0
 
@@ -43,13 +48,21 @@ class SearchFragment : BaseFragment() {
             }
 
             etSearch.doAfterTextChanged {
+                runnable?.let { runnable ->
+                    handler.removeCallbacks(runnable)
+                }
+
                 it?.let { text ->
-                    if (text.length >= 2) {
-                        // TODO ADD DELAY
-                        viewModel.searchMovie(it.toString())
-                    } else if (it.length < lengthBeforeChange) { // Text removed
-                        // TODO ADD DELAY
-                        viewModel.getAllMovies()
+                    runnable = Runnable {
+                        if (text.length >= 2) {
+                            viewModel.searchMovie(text.toString())
+                        } else if (text.length < lengthBeforeChange) { // T
+                            viewModel.getAllMovies()
+                        }
+                    }
+
+                    runnable?.let { runnable ->
+                        handler.postDelayed(runnable, SEARCH_DELAY)
                     }
                 }
             }
@@ -111,5 +124,9 @@ class SearchFragment : BaseFragment() {
 
     private fun onFavoriteStatusChange(): (Boolean, Movie) -> Unit = { favorite, movie ->
         viewModel.changeFavoriteStatus(favorite, movie)
+    }
+
+    companion object {
+        const val SEARCH_DELAY = 1000L
     }
 }
