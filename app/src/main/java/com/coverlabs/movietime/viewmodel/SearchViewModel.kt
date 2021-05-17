@@ -51,16 +51,16 @@ class SearchViewModel(
         title: String = "",
         genre: String = ""
     ) {
+        movieList.postLoading()
         viewModelScope.launch(searchError.handler) {
-            movieList.postLoading()
             val movies = movieRepository.searchMovies(title, genre, orderBy, sort)
             movieList.postSuccess(movies)
         }
     }
 
     fun getGenreList() {
+        genreList.postLoading()
         viewModelScope.launch(genreListError.handler) {
-            genreList.postLoading()
             val genres = genreList.value?.data ?: movieRepository.getGenreList()
             genreList.postSuccess(genres)
         }

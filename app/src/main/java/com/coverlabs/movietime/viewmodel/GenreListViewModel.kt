@@ -21,8 +21,8 @@ class GenreListViewModel(private val movieRepository: MovieRepository) : BaseVie
 
     @OnLifecycleEvent(ON_CREATE)
     fun getGenreList() {
+        genreList.postLoading()
         viewModelScope.launch(genreListError.handler) {
-            genreList.postLoading()
             val genres = genreList.value?.data ?: movieRepository.getGenreList()
             genreList.postSuccess(genres)
         }

@@ -32,8 +32,8 @@ class GenreViewModel(
     }
 
     fun searchMovie(genre: String) {
+        movieList.postLoading()
         viewModelScope.launch(searchError.handler) {
-            movieList.postLoading()
             val movies = movieRepository.searchMovies(genre = genre, orderBy = orderBy, sort = sort)
             movieList.postSuccess(movies)
         }

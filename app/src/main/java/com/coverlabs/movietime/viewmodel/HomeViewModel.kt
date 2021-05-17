@@ -25,8 +25,8 @@ class HomeViewModel(
 
     @OnLifecycleEvent(ON_CREATE)
     fun getTopFiveMovies() {
+        movieList.postLoading()
         viewModelScope.launch(topFiveError.handler) {
-            movieList.postLoading()
             val movies = movieRepository.getTopFiveMovies()
             movieList.postSuccess(movies)
         }

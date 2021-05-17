@@ -22,8 +22,8 @@ class MovieDetailViewModel(
     fun onMovieDetailsResult() = movieDetails.toLiveData()
 
     fun getMovieDetails(id: Int) {
+        movieDetails.postLoading()
         viewModelScope.launch(movieDetailsError.handler) {
-            movieDetails.postLoading()
             val details = movieRepository.getMovieDetails(id)
             movieDetails.postSuccess(details)
         }
