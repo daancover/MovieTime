@@ -24,6 +24,7 @@ import com.coverlabs.movietime.extension.handleErrors
 import com.coverlabs.movietime.extension.setSupportActionBar
 import com.coverlabs.movietime.extension.showBottomSheetDialog
 import com.coverlabs.movietime.ui.activity.MovieDetailActivity
+import com.coverlabs.movietime.ui.adapter.LoadingMovieListAdapter
 import com.coverlabs.movietime.ui.adapter.MovieListAdapter
 import com.coverlabs.movietime.ui.helper.GridItemDecoration
 import com.coverlabs.movietime.viewmodel.SearchViewModel
@@ -173,7 +174,7 @@ class SearchFragment : BaseFragment() {
     private fun handleMovieList() = Observer<State<List<Movie>>> {
         when (it.status) {
             LOADING -> {
-                // TODO LOADING
+                setupLoadingMovieList()
             }
             SUCCESS -> {
                 it.dataIfNotHandled?.let { movieList ->
@@ -251,6 +252,24 @@ class SearchFragment : BaseFragment() {
                 gpNoMovie.isVisible = true
                 rvMovieList.isVisible = false
             }
+        }
+    }
+
+    private fun setupLoadingMovieList() {
+        with(binding) {
+            rvMovieList.layoutManager = GridLayoutManager(context, GRID_LAYOUT_COLUMNS)
+
+            if (rvMovieList.itemDecorationCount == 0) {
+                rvMovieList.addItemDecoration(GridItemDecoration())
+            }
+
+            rvMovieList.adapter = LoadingMovieListAdapter(
+                10,
+                false
+            )
+
+            gpNoMovie.isVisible = false
+            rvMovieList.isVisible = true
         }
     }
 

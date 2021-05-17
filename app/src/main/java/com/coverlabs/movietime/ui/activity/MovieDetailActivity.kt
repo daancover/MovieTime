@@ -7,6 +7,7 @@ import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.coverlabs.domain.model.Movie
@@ -15,6 +16,8 @@ import com.coverlabs.movietime.databinding.ActivityMovieDetailBinding
 import com.coverlabs.movietime.extension.handleErrors
 import com.coverlabs.movietime.ui.adapter.CastListAdapter
 import com.coverlabs.movietime.ui.adapter.GenreListAdapter
+import com.coverlabs.movietime.ui.adapter.LoadingCastListAdapter
+import com.coverlabs.movietime.ui.adapter.LoadingGenreListAdapter
 import com.coverlabs.movietime.ui.helper.CutImageHalf
 import com.coverlabs.movietime.viewmodel.MovieDetailViewModel
 import com.coverlabs.movietime.viewmodel.base.State
@@ -35,13 +38,6 @@ class MovieDetailActivity : AppCompatActivity() {
         observeEvents()
     }
 
-    private fun observeEvents() {
-        lifecycle.addObserver(viewModel)
-        val movieId = intent.getIntExtra(ARGS_MOVIE_ID, 0)
-        viewModel.onMovieDetailsResult().observe(this, handleMovieDetails())
-        viewModel.getMovieDetails(movieId)
-    }
-
     /*
     * Restore previous data to screen and update favorite status
     * */
@@ -52,10 +48,17 @@ class MovieDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun observeEvents() {
+        lifecycle.addObserver(viewModel)
+        val movieId = intent.getIntExtra(ARGS_MOVIE_ID, 0)
+        viewModel.onMovieDetailsResult().observe(this, handleMovieDetails())
+        viewModel.getMovieDetails(movieId)
+    }
+
     private fun handleMovieDetails() = Observer<State<MovieDetails>> {
         when (it.status) {
             LOADING -> {
-                // TODO LOADING
+                setupLoadingMovieDetails()
             }
             SUCCESS -> {
                 it.dataIfNotHandled?.let { movieDetails ->
@@ -73,8 +76,20 @@ class MovieDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupLoadingMovieDetails() {
+        with(binding) {
+            gbLoading.isVisible = true
+
+            setupLoadingGenreList()
+
+            rvCastingList.adapter = LoadingCastListAdapter(3)
+        }
+    }
+
     private fun setupMovieDetails(movieDetails: MovieDetails) {
         with(binding) {
+            gbLoading.isVisible = false
+
             toolbar.title = movieDetails.title
 
             setupMoviePoster(movieDetails)
@@ -109,6 +124,10 @@ class MovieDetailActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    private fun ActivityMovieDetailBinding.setupLoadingGenreList() {
+        rvGenreList.adapter = LoadingGenreListAdapter(3)
     }
 
     private fun ActivityMovieDetailBinding.setupGenreList(
@@ -147,7 +166,6 @@ class MovieDetailActivity : AppCompatActivity() {
 
 /*
 * TODO LIST
-*   Loading
 *   Optional:
 *       Infinite scroll and pagination
 *       Add functionality where clicking on an image preview in the first section expands the image in a modal
@@ -162,6 +180,7 @@ class MovieDetailActivity : AppCompatActivity() {
 *       Pressing a genre navigates to a new view showing the category and associated movies
 *   Handle specific errors (Looks like your device is not connected to the internet. Please make sure you are connected and try again!)
 *   Fix back pressed on HomeActivity and all screens that show favorite status
+*   Loading
 *
 *
 *

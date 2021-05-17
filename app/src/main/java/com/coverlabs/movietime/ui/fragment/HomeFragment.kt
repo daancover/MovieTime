@@ -15,6 +15,7 @@ import com.coverlabs.movietime.extension.setupCarousel
 import com.coverlabs.movietime.extension.setupSideTouchEvent
 import com.coverlabs.movietime.ui.activity.MovieDetailActivity
 import com.coverlabs.movietime.ui.adapter.MovieListAdapter
+import com.coverlabs.movietime.ui.adapter.LoadingMovieListAdapter
 import com.coverlabs.movietime.ui.helper.HorizontalListItemDecoration
 import com.coverlabs.movietime.viewmodel.HomeViewModel
 import com.coverlabs.movietime.viewmodel.base.State
@@ -60,7 +61,7 @@ class HomeFragment : BaseFragment() {
     private fun handleMovieList() = Observer<State<List<Movie>>> {
         when (it.status) {
             LOADING -> {
-                // TODO LOADING
+                setupLoadingMovieList()
             }
             SUCCESS -> {
                 it.dataIfNotHandled?.let { movieList ->
@@ -87,6 +88,20 @@ class HomeFragment : BaseFragment() {
             }
             else -> {
                 // do nothing
+            }
+        }
+    }
+
+    private fun setupLoadingMovieList() {
+        with(binding) {
+            vpTopFive.apply {
+                adapter = LoadingMovieListAdapter(
+                    2,
+                    true
+                )
+
+                setupCarousel()
+                setupSideTouchEvent()
             }
         }
     }

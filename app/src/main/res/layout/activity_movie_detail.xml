@@ -10,7 +10,8 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/collapsing_toolbar_max_height"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:theme="@style/Theme.MovieTime.AppBarOverlay">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/toolbarLayout"
@@ -50,7 +51,8 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin" />
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/Theme.MovieTime.PopupOverlay" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -149,13 +151,54 @@
                 android:layout_marginStart="@dimen/margin_default"
                 android:layout_marginTop="@dimen/margin_default"
                 android:layout_marginBottom="@dimen/margin_large"
-                android:adjustViewBounds="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvDirectorTitle"
                 tools:text="Director name" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shDescription"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/tvDescription"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tvDescription"
+                app:layout_constraintTop_toTopOf="@id/tvDescription"
+                app:shimmer_auto_start="true">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_xlarge"
+                    android:background="@color/gray" />
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shDirector"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/tvDirectorName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tvDirectorName"
+                app:layout_constraintTop_toTopOf="@id/tvDirectorName"
+                app:shimmer_auto_start="true">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_xlarge"
+                    android:background="@color/gray" />
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/gbLoading"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:constraint_referenced_ids="shDescription,shDirector"
+                tools:visibility="visible" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

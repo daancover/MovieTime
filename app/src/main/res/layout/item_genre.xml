@@ -5,14 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
-    android:padding="@dimen/margin_default"
-    app:cardCornerRadius="@dimen/card_corner_radius">
+    android:padding="@dimen/margin_default">
 
     <TextView
         android:id="@+id/tvGenre"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
         android:clickable="false"
         android:focusable="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"

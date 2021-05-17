@@ -11,6 +11,7 @@ import com.coverlabs.movietime.databinding.FragmentGenreBinding
 import com.coverlabs.movietime.extension.handleErrors
 import com.coverlabs.movietime.ui.activity.GenreActivity
 import com.coverlabs.movietime.ui.adapter.GenreListAdapter
+import com.coverlabs.movietime.ui.adapter.LoadingGenreListAdapter
 import com.coverlabs.movietime.viewmodel.GenreListViewModel
 import com.coverlabs.movietime.viewmodel.base.State
 import com.coverlabs.movietime.viewmodel.base.State.Status.*
@@ -43,7 +44,7 @@ class GenreListFragment : BaseFragment() {
     private fun handleGenreList() = Observer<State<List<String>>> {
         when (it.status) {
             LOADING -> {
-                // TODO LOADING
+                setupLoadingGenreList()
             }
             SUCCESS -> {
                 it.dataIfNotHandled?.let { genreList ->
@@ -58,6 +59,22 @@ class GenreListFragment : BaseFragment() {
             else -> {
                 // do nothing
             }
+        }
+    }
+
+    private fun setupLoadingGenreList() {
+        with(binding) {
+            val layoutManager = rvGenreList.layoutManager as LinearLayoutManager
+            if (rvGenreList.itemDecorationCount == 0) {
+                rvGenreList.addItemDecoration(
+                    DividerItemDecoration(
+                        context,
+                        layoutManager.orientation
+                    )
+                )
+            }
+
+            rvGenreList.adapter = LoadingGenreListAdapter(10)
         }
     }
 

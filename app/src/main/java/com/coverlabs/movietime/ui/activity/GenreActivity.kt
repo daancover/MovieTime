@@ -16,6 +16,7 @@ import com.coverlabs.movietime.MovieTimeApplication.Companion.GRID_LAYOUT_COLUMN
 import com.coverlabs.movietime.R
 import com.coverlabs.movietime.databinding.ActivityGenreBinding
 import com.coverlabs.movietime.extension.handleErrors
+import com.coverlabs.movietime.ui.adapter.LoadingMovieListAdapter
 import com.coverlabs.movietime.ui.adapter.MovieListAdapter
 import com.coverlabs.movietime.ui.helper.GridItemDecoration
 import com.coverlabs.movietime.viewmodel.GenreViewModel
@@ -99,7 +100,7 @@ class GenreActivity : AppCompatActivity() {
     private fun handleMovieList() = Observer<State<List<Movie>>> {
         when (it.status) {
             LOADING -> {
-                // TODO LOADING
+                setupLoadingMovieList()
             }
             SUCCESS -> {
                 it.dataIfNotHandled?.let { movieList ->
@@ -114,6 +115,22 @@ class GenreActivity : AppCompatActivity() {
             else -> {
                 // do nothing
             }
+        }
+    }
+
+    private fun setupLoadingMovieList() {
+        with(binding) {
+            val context = this@GenreActivity
+            rvMovieList.layoutManager = GridLayoutManager(context, GRID_LAYOUT_COLUMNS)
+
+            if (rvMovieList.itemDecorationCount == 0) {
+                rvMovieList.addItemDecoration(GridItemDecoration())
+            }
+
+            rvMovieList.adapter = LoadingMovieListAdapter(
+                10,
+                false
+            )
         }
     }
 

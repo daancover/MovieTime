@@ -7,14 +7,12 @@
     android:paddingStart="@dimen/margin_default"
     android:paddingTop="@dimen/margin_small"
     android:paddingEnd="@dimen/margin_default"
-    android:paddingBottom="@dimen/margin_small"
-    app:cardCornerRadius="@dimen/card_corner_radius">
+    android:paddingBottom="@dimen/margin_small">
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +23,6 @@
         android:id="@+id/tvCharacter"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
