@@ -4,22 +4,97 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context=".ui.fragment.SearchFragment">
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/etSearch"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_default"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_marginEnd="@dimen/margin_default"
-        android:hint="@string/search_hint"
-        android:imeOptions="actionDone"
-        android:inputType="text"
-        android:maxLength="32"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clSearchBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/bg_linear_gradient"
+            android:elevation="@dimen/toolbar_elevation"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/search_toolbar_height"
+                android:background="@color/transparent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etSearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_default"
+                android:layout_marginTop="@dimen/margin_default"
+                android:layout_marginEnd="@dimen/margin_xlarge"
+                android:hint="@string/search_hint"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLength="32"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etGenre"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_default"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_xlarge"
+                android:clickable="true"
+                android:focusable="false"
+                android:hint="@string/genre_hint"
+                android:longClickable="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etSearch"
+                tools:ignore="KeyboardInaccessibleWidget" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_default"
+                android:background="@color/transparent"
+                android:padding="@dimen/margin_small"
+                android:contentDescription="@string/search_button_content_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/etGenre"
+                app:layout_constraintBottom_toBottomOf="@id/etGenre"
+                app:srcCompat="@drawable/ic_search" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/gpGenre"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:constraint_referenced_ids="etGenre,btSearch"
+                tools:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cbExpand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/cb_expand"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingTop="@dimen/margin_default"
+                android:paddingBottom="@dimen/margin_default"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etGenre" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMovieList"
@@ -29,7 +104,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etSearch"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
         tools:itemCount="10"
         tools:listitem="@layout/item_movie" />
 </androidx.constraintlayout.widget.ConstraintLayout>

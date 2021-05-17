@@ -11,6 +11,8 @@ import com.coverlabs.SearchMoviesQuery
 import com.coverlabs.data.mapper.map
 import com.coverlabs.domain.model.Movie
 import com.coverlabs.domain.model.MovieDetails
+import com.coverlabs.domain.model.OrderBy
+import com.coverlabs.domain.model.Sort
 import com.coverlabs.domain.repository.MovieRepository
 
 class MovieDataSource(private val apolloClient: ApolloClient) : MovieRepository {
@@ -71,13 +73,19 @@ class MovieDataSource(private val apolloClient: ApolloClient) : MovieRepository 
         throw Exception()
     }
 
-    override suspend fun searchMovies(title: String, genre: String, orderBy: String): List<Movie> {
+    override suspend fun searchMovies(
+        title: String,
+        genre: String,
+        orderBy: OrderBy,
+        sort: Sort
+    ): List<Movie> {
         val response = try {
             apolloClient.query(
                 SearchMoviesQuery(
                     Input.optional(title),
                     Input.optional(genre),
-                    Input.optional(orderBy)
+                    Input.optional(orderBy.value),
+                    Input.optional(com.coverlabs.type.Sort.safeValueOf(sort.name))
                 )
             ).await()
         } catch (e: ApolloException) {

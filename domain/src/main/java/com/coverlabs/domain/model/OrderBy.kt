@@ -1,7 +1,8 @@
 package com.coverlabs.domain.model
 
-enum class OrderBy(value: String) {
+enum class OrderBy(val value: String) {
     TITLE("title"),
-    VOTE_AVERAGE("voteAverage"),
-    RELEASE_DATE("releaseDate")
+    POPULARITY("popularity"),
+    RELEASE_DATE("releaseDate"),
+    NONE("");
 }

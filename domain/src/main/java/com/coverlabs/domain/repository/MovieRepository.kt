@@ -2,6 +2,10 @@ package com.coverlabs.domain.repository
 
 import com.coverlabs.domain.model.Movie
 import com.coverlabs.domain.model.MovieDetails
+import com.coverlabs.domain.model.OrderBy
+import com.coverlabs.domain.model.OrderBy.NONE
+import com.coverlabs.domain.model.Sort
+import com.coverlabs.domain.model.Sort.DESC
 
 interface MovieRepository {
 
@@ -14,6 +18,7 @@ interface MovieRepository {
     suspend fun searchMovies(
         title: String = "",
         genre: String = "",
-        orderBy: String = ""
+        orderBy: OrderBy = NONE,
+        sort: Sort = DESC
     ): List<Movie>
 }

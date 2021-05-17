@@ -18,7 +18,7 @@ open class MovieListViewModel(
     @OnLifecycleEvent(ON_CREATE)
     fun getFavorites() {
         favoriteMovieList.postLoading()
-        storageRepository.getFavorites()?.let {
+        storageRepository.getFavorites().let {
             favoriteMovieList.postSuccess(it)
         }
     }

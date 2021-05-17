@@ -10,6 +10,14 @@
     <string name="home_no_favorites_message">You still don\'t have any Favorite movies! Touch the Heart icon to add your favorite movies to this quick list!</string>
 
     <string name="search_hint">Search</string>
+    <string name="search_select_genre_title">Choose a genre</string>
+    <string name="search_button_content_description">Search</string>
 
+    <string name="genre_hint">Genre</string>
     <string name="genre_title">Search by genre</string>
+
+    <string name="menu_sort_title">Title</string>
+    <string name="menu_sort_popularity">Popularity</string>
+    <string name="menu_sort_newer">Newer</string>
+    <string name="menu_sort_older">Older</string>
 </resources>

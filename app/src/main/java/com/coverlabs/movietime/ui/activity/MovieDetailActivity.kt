@@ -14,6 +14,7 @@ import com.coverlabs.movietime.viewmodel.MovieDetailViewModel
 import com.coverlabs.movietime.viewmodel.base.State
 import com.coverlabs.movietime.viewmodel.base.State.Status.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 
 class MovieDetailActivity : AppCompatActivity() {
 
@@ -89,11 +90,11 @@ class MovieDetailActivity : AppCompatActivity() {
 
 /*
 * TODO LIST
-*   Order by "title" or "voteAverage"
 *   Movie detail layout (title, voteAverage, voteCount, genres, posterPath, overview, cast, director)
 *       Pressing a genre navigates to a new view showing the category and associated movies
-*   Handle specific errors
+*   Handle specific errors (Looks like your device is not connected to the internet. Please make sure you are connected and try again!)
 *   App icon
+*   Fix back pressed on HomeActivity
 *   Optional:
 *       Infinite scroll and pagination
 *       Add a search bar that allows searching on 2 or more fields of the movie object
@@ -103,6 +104,7 @@ class MovieDetailActivity : AppCompatActivity() {
 *   Search by Genre
 *   Browse by all and search by "title"
 *   Make SearchActivity display all movies when search length < 2
+*   Order by "title" or "popularity"
 *
 *       Lazy load the images of the movie item component so they only appear once the component is visible
 *       Add at least one chart or graph representing anything you feel is helpful to the end user

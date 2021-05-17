@@ -2,11 +2,12 @@
     <!-- Base application theme. -->
     <style name="Theme.MovieTime" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/blueLight</item>
+        <item name="colorPrimaryVariant">@color/blueDark</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:textColor">@color/textColor</item>
     </style>
 </resources>
