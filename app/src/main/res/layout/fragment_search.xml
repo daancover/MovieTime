@@ -60,17 +60,29 @@
                 app:layout_constraintTop_toBottomOf="@id/etSearch"
                 tools:ignore="KeyboardInaccessibleWidget" />
 
+            <ProgressBar
+                android:id="@+id/pbGenre"
+                android:layout_width="@dimen/small_progress_bar_size"
+                android:layout_height="@dimen/small_progress_bar_size"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:indeterminateTint="@color/white"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/etGenre"
+                app:layout_constraintEnd_toEndOf="@id/etGenre"
+                app:layout_constraintTop_toTopOf="@id/etGenre"
+                tools:visibility="visible" />
+
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_default"
-                android:background="@color/transparent"
-                android:padding="@dimen/margin_small"
+                android:background="?attr/selectableItemBackground"
                 android:contentDescription="@string/search_button_content_description"
+                android:padding="@dimen/margin_small"
+                app:layout_constraintBottom_toBottomOf="@id/etGenre"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/etGenre"
-                app:layout_constraintBottom_toBottomOf="@id/etGenre"
                 app:srcCompat="@drawable/ic_search" />
 
             <androidx.constraintlayout.widget.Group
@@ -107,4 +119,38 @@
         app:layout_constraintTop_toBottomOf="@id/appBar"
         tools:itemCount="10"
         tools:listitem="@layout/item_movie" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivNoMovie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
+        app:srcCompat="@drawable/ic_sad" />
+
+    <TextView
+        android:id="@+id/tvNoMovie"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_default"
+        android:text="@string/home_no_movies_message"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivNoMovie"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/gpNoMovie"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:constraint_referenced_ids="ivNoMovie,tvNoMovie"
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>

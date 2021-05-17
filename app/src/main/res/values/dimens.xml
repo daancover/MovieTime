@@ -1,5 +1,5 @@
 <resources>
-
+    <!-- Default Margins -->
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_default">16dp</dimen>
     <dimen name="margin_medium">24dp</dimen>
@@ -11,4 +11,12 @@
 
     <dimen name="search_toolbar_height">80dp</dimen>
     <dimen name="bottom_sheet_height">400dp</dimen>
+    <dimen name="collapsing_toolbar_max_height">280dp</dimen>
+    <dimen name="small_progress_bar_size">24dp</dimen>
+
+    <!-- ChipView -->
+    <dimen name="chip_width">100dp</dimen>
+    <dimen name="chip_height">40dp</dimen>
+    <dimen name="chip_margin">2dp</dimen>
+    <dimen name="chip_padding">8dp</dimen>
 </resources>

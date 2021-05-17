@@ -5,9 +5,8 @@ import android.os.Handler
 import android.os.Looper
 import android.text.TextWatcher
 import android.view.*
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doBeforeTextChanged
 import androidx.lifecycle.Observer
@@ -21,6 +20,7 @@ import com.coverlabs.domain.model.Sort.DESC
 import com.coverlabs.movietime.MovieTimeApplication.Companion.GRID_LAYOUT_COLUMNS
 import com.coverlabs.movietime.R
 import com.coverlabs.movietime.databinding.FragmentSearchBinding
+import com.coverlabs.movietime.extension.handleErrors
 import com.coverlabs.movietime.extension.setSupportActionBar
 import com.coverlabs.movietime.extension.showBottomSheetDialog
 import com.coverlabs.movietime.ui.activity.MovieDetailActivity
@@ -73,6 +73,16 @@ class SearchFragment : BaseFragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    /*
+    * Restore previous data to screen and update favorite status
+    * */
+    override fun onResume() {
+        super.onResume()
+        viewModel.onMovieListResult().value?.data?.let {
+            setupMovieList(it)
+        }
+    }
+
     private fun setupToolbar() {
         with(binding) {
             setHasOptionsMenu(true)
@@ -98,12 +108,7 @@ class SearchFragment : BaseFragment() {
     private fun FragmentSearchBinding.onExpandClickListener() {
         cbExpand.setOnCheckedChangeListener { _, isChecked ->
             etGenre.setText("")
-
-            if (isChecked) {
-                gpGenre.visibility = VISIBLE
-            } else {
-                gpGenre.visibility = GONE
-            }
+            gpGenre.isVisible = isChecked
         }
     }
 
@@ -115,8 +120,9 @@ class SearchFragment : BaseFragment() {
 
     private fun FragmentSearchBinding.onGenreListClickListener() {
         etGenre.setOnClickListener {
-            // TODO CHECK IF IT'S NOT LOADING
-            viewModel.getGenreList()
+            if (!pbGenre.isVisible) {
+                viewModel.getGenreList()
+            }
         }
     }
 
@@ -175,7 +181,9 @@ class SearchFragment : BaseFragment() {
                 }
             }
             ERROR -> {
-                // TODO ERROR
+                it.error?.let { error ->
+                    requireContext().handleErrors(error)
+                }
             }
             else -> {
                 // do nothing
@@ -186,9 +194,10 @@ class SearchFragment : BaseFragment() {
     private fun handleGenreList() = Observer<State<List<String>>> {
         when (it.status) {
             LOADING -> {
-                // TODO LOADING
+                binding.pbGenre.isVisible = true
             }
             SUCCESS -> {
+                binding.pbGenre.isVisible = false
                 it.dataIfNotHandled?.let { genreList ->
                     if (bottomSheetDialog == null) {
                         bottomSheetDialog = context?.showBottomSheetDialog(
@@ -207,7 +216,10 @@ class SearchFragment : BaseFragment() {
                 }
             }
             ERROR -> {
-                // TODO ERROR
+                binding.pbGenre.isVisible = false
+                it.error?.let { error ->
+                    requireContext().handleErrors(error)
+                }
             }
             else -> {
                 // do nothing
@@ -217,20 +229,28 @@ class SearchFragment : BaseFragment() {
 
     private fun setupMovieList(movieList: List<Movie>) {
         with(binding) {
-            rvMovieList.layoutManager = GridLayoutManager(context, GRID_LAYOUT_COLUMNS)
+            if (movieList.isNotEmpty()) {
+                rvMovieList.layoutManager = GridLayoutManager(context, GRID_LAYOUT_COLUMNS)
 
-            if (rvMovieList.itemDecorationCount == 0) {
-                rvMovieList.addItemDecoration(GridItemDecoration())
+                if (rvMovieList.itemDecorationCount == 0) {
+                    rvMovieList.addItemDecoration(GridItemDecoration())
+                }
+
+                val isFavoriteList = viewModel.isFavoriteList(movieList)
+                rvMovieList.adapter = MovieListAdapter(
+                    movieList.toMutableList(),
+                    isFavoriteList.toMutableList(),
+                    false,
+                    onClickListener = onMovieClickListener(),
+                    onFavoriteStatusChange = onFavoriteStatusChange()
+                )
+
+                gpNoMovie.isVisible = false
+                rvMovieList.isVisible = true
+            } else {
+                gpNoMovie.isVisible = true
+                rvMovieList.isVisible = false
             }
-
-            val isFavoriteList = viewModel.isFavoriteList(movieList)
-            rvMovieList.adapter = MovieListAdapter(
-                movieList.toMutableList(),
-                isFavoriteList.toMutableList(),
-                false,
-                onClickListener = onMovieClickListener(),
-                onFavoriteStatusChange = onFavoriteStatusChange()
-            )
         }
     }
 

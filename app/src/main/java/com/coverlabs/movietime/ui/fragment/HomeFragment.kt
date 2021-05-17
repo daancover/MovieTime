@@ -3,14 +3,14 @@ package com.coverlabs.movietime.ui.fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.coverlabs.domain.model.Movie
 import com.coverlabs.movietime.databinding.FragmentHomeBinding
+import com.coverlabs.movietime.extension.handleErrors
 import com.coverlabs.movietime.extension.setupCarousel
 import com.coverlabs.movietime.extension.setupSideTouchEvent
 import com.coverlabs.movietime.ui.activity.MovieDetailActivity
@@ -36,6 +36,17 @@ class HomeFragment : BaseFragment() {
         return binding.root
     }
 
+    /*
+    * Restore previous data to screen and update favorite status
+    * */
+    override fun onResume() {
+        super.onResume()
+        viewModel.onMovieListResult().value?.data?.let {
+            setupMovieList(it)
+            viewModel.getFavorites()
+        }
+    }
+
     override fun setupView() {
         // do nothing
     }
@@ -57,7 +68,9 @@ class HomeFragment : BaseFragment() {
                 }
             }
             ERROR -> {
-                // TODO ERROR
+                it.error?.let { error ->
+                    requireContext().handleErrors(error)
+                }
             }
             else -> {
                 // do nothing
@@ -116,11 +129,11 @@ class HomeFragment : BaseFragment() {
                 )
 
             if (movieList.isNotEmpty()) {
-                gpNoFavorite.visibility = GONE
-                rvFavorites.visibility = VISIBLE
+                gpNoFavorite.isVisible = false
+                rvFavorites.isVisible = true
             } else {
-                gpNoFavorite.visibility = VISIBLE
-                rvFavorites.visibility = GONE
+                gpNoFavorite.isVisible = true
+                rvFavorites.isVisible = false
             }
         }
     }
@@ -144,11 +157,11 @@ class HomeFragment : BaseFragment() {
                     changeFavoriteStatus(favorite, movie)
 
                     if (itemCount > 0) {
-                        gpNoFavorite.visibility = GONE
-                        rvFavorites.visibility = VISIBLE
+                        gpNoFavorite.isVisible = false
+                        rvFavorites.isVisible = true
                     } else {
-                        gpNoFavorite.visibility = VISIBLE
-                        rvFavorites.visibility = GONE
+                        gpNoFavorite.isVisible = true
+                        rvFavorites.isVisible = false
                     }
                 }
             }

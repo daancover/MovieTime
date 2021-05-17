@@ -4,20 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    android:padding="@dimen/margin_default"
+    android:paddingStart="@dimen/margin_default"
+    android:paddingTop="@dimen/margin_small"
+    android:paddingEnd="@dimen/margin_default"
+    android:paddingBottom="@dimen/margin_small"
     app:cardCornerRadius="@dimen/card_corner_radius">
 
     <TextView
-        android:id="@+id/tvGenre"
+        android:id="@+id/tvName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:clickable="false"
-        android:focusable="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Genre name" />
+        tools:text="Actor/Actress name" />
+
+    <TextView
+        android:id="@+id/tvCharacter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvName"
+        tools:text="Character name" />
 </androidx.constraintlayout.widget.ConstraintLayout>

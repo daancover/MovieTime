@@ -39,7 +39,7 @@ open class MovieListViewModel(
         storageRepository.removeFavorite(movie)
     }
 
-    private fun isFavorite(movie: Movie): Boolean {
+    fun isFavorite(movie: Movie): Boolean {
         return storageRepository.isFavorite(movie)
     }
 

@@ -17,7 +17,7 @@ class State<T>(private val isSingleEvent: Boolean = false) {
 
     var status: Status = CREATED
         private set
-    private var data: T? = null
+    var data: T? = null
         private set
     var error: Error? = null
         private set

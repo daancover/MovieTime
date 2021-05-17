@@ -15,6 +15,7 @@ import com.coverlabs.domain.model.Sort
 import com.coverlabs.movietime.MovieTimeApplication.Companion.GRID_LAYOUT_COLUMNS
 import com.coverlabs.movietime.R
 import com.coverlabs.movietime.databinding.ActivityGenreBinding
+import com.coverlabs.movietime.extension.handleErrors
 import com.coverlabs.movietime.ui.adapter.MovieListAdapter
 import com.coverlabs.movietime.ui.helper.GridItemDecoration
 import com.coverlabs.movietime.viewmodel.GenreViewModel
@@ -59,6 +60,16 @@ class GenreActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    /*
+    * Restore previous data to screen and update favorite status
+    * */
+    override fun onResume() {
+        super.onResume()
+        viewModel.onMovieListResult().value?.data?.let {
+            setupMovieList(it)
+        }
+    }
+
     private fun observeEvents() {
         lifecycle.addObserver(viewModel)
         val genre = intent.getStringExtra(ARG_GENRE).orEmpty()
@@ -96,7 +107,9 @@ class GenreActivity : AppCompatActivity() {
                 }
             }
             ERROR -> {
-                // TODO ERROR
+                it.error?.let { error ->
+                    handleErrors(error)
+                }
             }
             else -> {
                 // do nothing

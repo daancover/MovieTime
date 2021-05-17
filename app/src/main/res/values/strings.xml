@@ -12,6 +12,7 @@
     <string name="search_hint">Search</string>
     <string name="search_select_genre_title">Choose a genre</string>
     <string name="search_button_content_description">Search</string>
+    <string name="home_no_movies_message">Unfortunately, we couldn\'t find the movie you\'re looking for. How about trying another title or genre?</string>
 
     <string name="genre_hint">Genre</string>
     <string name="genre_title">Search by genre</string>
@@ -20,4 +21,13 @@
     <string name="menu_sort_popularity">Popularity</string>
     <string name="menu_sort_newer">Newer</string>
     <string name="menu_sort_older">Older</string>
+
+    <string name="movie_detail_director_title">Director</string>
+    <string name="movie_detail_cast_title">Cast</string>
+    <string name="movie_detail_genres_title">Genres</string>
+
+    <string name="generic_error_title">Oops!</string>
+    <string name="generic_error_message">An unexpected error occurred! Please try again later.</string>
+    <string name="generic_error_button">OK</string>
+    <string name="device_not_connected_message">Looks like your device is not connected to the internet. Please make sure you are connected and try again!</string>
 </resources>
