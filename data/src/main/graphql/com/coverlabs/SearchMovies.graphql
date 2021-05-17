@@ -1,6 +1,6 @@
 # Write your query or mutation here
-query SearchMovies($title: String, $genre: String, $orderBy: String, $sort: Sort) {
-    movies(search: $title, genre: $genre, orderBy: $orderBy, sort: $sort) {
+query SearchMovies($title: String, $genre: String, $orderBy: String, $sort: Sort, $limit: Int, $offset: Int) {
+    movies(search: $title, genre: $genre, orderBy: $orderBy, sort: $sort, limit: $limit, offset: $offset) {
         id,
         posterPath
     }

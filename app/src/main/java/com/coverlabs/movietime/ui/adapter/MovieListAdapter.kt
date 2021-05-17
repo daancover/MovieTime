@@ -82,6 +82,16 @@ class MovieListAdapter(
         return indexToRemove
     }
 
+    fun addMovies(movieList: List<Movie>, favoriteList: List<Boolean>) {
+        val firstIndex = list.size
+        movieList.forEachIndexed { index, movie ->
+            list.add(movie)
+            isFavorite.add(favoriteList[index])
+        }
+
+        notifyItemRangeInserted(firstIndex, movieList.size)
+    }
+
     class MovieViewHolder(
         private val binding: ItemMovieBinding
     ) : RecyclerView.ViewHolder(binding.root) {

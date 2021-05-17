@@ -23,7 +23,6 @@ class MovieDataSource(private val apolloClient: ApolloClient) : MovieRepository 
                 GetTopFiveMoviesQuery()
             ).await()
         } catch (e: ApolloException) {
-            // handle protocol errors
             throw e
         }
 
@@ -34,8 +33,7 @@ class MovieDataSource(private val apolloClient: ApolloClient) : MovieRepository 
         }
 
         if (response.hasErrors()) {
-            // handle application errors
-            return emptyList()
+            throw Exception()
         }
 
         throw Exception()
@@ -49,8 +47,7 @@ class MovieDataSource(private val apolloClient: ApolloClient) : MovieRepository 
         val genreList = response.data?.genres
 
         if (genreList == null || response.hasErrors()) {
-            // handle application errors
-            return emptyList()
+            throw Exception()
         }
 
         return genreList
@@ -66,7 +63,6 @@ class MovieDataSource(private val apolloClient: ApolloClient) : MovieRepository 
         }
 
         if (response.hasErrors()) {
-            // handle application errors
             throw Exception()
         }
 
@@ -77,7 +73,9 @@ class MovieDataSource(private val apolloClient: ApolloClient) : MovieRepository 
         title: String,
         genre: String,
         orderBy: OrderBy,
-        sort: Sort
+        sort: Sort,
+        limit: Int,
+        offset: Int
     ): List<Movie> {
         val response = try {
             apolloClient.query(
@@ -85,11 +83,13 @@ class MovieDataSource(private val apolloClient: ApolloClient) : MovieRepository 
                     Input.optional(title),
                     Input.optional(genre),
                     Input.optional(orderBy.value),
-                    Input.optional(com.coverlabs.type.Sort.safeValueOf(sort.name))
+                    Input.optional(com.coverlabs.type.Sort.safeValueOf(sort.name)),
+                    Input.optional(limit),
+                    Input.optional(offset)
+
                 )
             ).await()
         } catch (e: ApolloException) {
-            // handle protocol errors
             throw e
         }
 
@@ -100,8 +100,7 @@ class MovieDataSource(private val apolloClient: ApolloClient) : MovieRepository 
         }
 
         if (response.hasErrors()) {
-            // handle application errors
-            return emptyList()
+            throw Exception()
         }
 
         throw Exception()

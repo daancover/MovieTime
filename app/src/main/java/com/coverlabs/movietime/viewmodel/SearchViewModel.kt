@@ -23,6 +23,7 @@ class SearchViewModel(
     private var sort: Sort = DESC
 
     private val movieList = StateMutableLiveData<List<Movie>>(true)
+    private val movieListAdded = StateMutableLiveData<List<Movie>>(true)
     private val genreList = StateMutableLiveData<List<String>>(true)
 
     private val searchError = ErrorHandler { error ->
@@ -34,6 +35,8 @@ class SearchViewModel(
     }
 
     fun onMovieListResult() = movieList.toLiveData()
+
+    fun onMovieListAddedResult() = movieListAdded.toLiveData()
 
     fun onGenreListResult() = genreList.toLiveData()
 
@@ -53,8 +56,33 @@ class SearchViewModel(
     ) {
         movieList.postLoading()
         viewModelScope.launch(searchError.handler) {
-            val movies = movieRepository.searchMovies(title, genre, orderBy, sort)
+            val movies = movieRepository.searchMovies(
+                title,
+                genre,
+                orderBy,
+                sort,
+                limit = SEARCH_LIMIT
+            )
             movieList.postSuccess(movies)
+        }
+    }
+
+    fun fetchMoreMovies(
+        title: String = "",
+        genre: String = "",
+        offset: Int = 0
+    ) {
+        movieListAdded.postLoading()
+        viewModelScope.launch(searchError.handler) {
+            val movies = movieRepository.searchMovies(
+                title,
+                genre,
+                orderBy,
+                sort,
+                SEARCH_LIMIT,
+                offset
+            )
+            movieListAdded.postSuccess(movies)
         }
     }
 
@@ -64,5 +92,9 @@ class SearchViewModel(
             val genres = genreList.value?.data ?: movieRepository.getGenreList()
             genreList.postSuccess(genres)
         }
+    }
+
+    companion object {
+        const val SEARCH_LIMIT = 10
     }
 }

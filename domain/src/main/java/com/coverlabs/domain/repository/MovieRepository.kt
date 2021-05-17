@@ -19,6 +19,8 @@ interface MovieRepository {
         title: String = "",
         genre: String = "",
         orderBy: OrderBy = NONE,
-        sort: Sort = DESC
+        sort: Sort = DESC,
+        limit: Int = 0,
+        offset: Int = 0
     ): List<Movie>
 }

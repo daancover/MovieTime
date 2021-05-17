@@ -13,6 +13,7 @@
     <dimen name="bottom_sheet_height">400dp</dimen>
     <dimen name="collapsing_toolbar_max_height">280dp</dimen>
     <dimen name="small_progress_bar_size">24dp</dimen>
+    <dimen name="medium_progress_bar_size">32dp</dimen>
 
     <!-- ChipView -->
     <dimen name="chip_width">100dp</dimen>

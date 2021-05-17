@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -18,6 +17,7 @@ import com.coverlabs.movietime.ui.adapter.CastListAdapter
 import com.coverlabs.movietime.ui.adapter.GenreListAdapter
 import com.coverlabs.movietime.ui.adapter.LoadingCastListAdapter
 import com.coverlabs.movietime.ui.adapter.LoadingGenreListAdapter
+import com.coverlabs.movietime.ui.dialog.MoviePosterDialog
 import com.coverlabs.movietime.ui.helper.CutImageHalf
 import com.coverlabs.movietime.viewmodel.MovieDetailViewModel
 import com.coverlabs.movietime.viewmodel.base.State
@@ -117,12 +117,10 @@ class MovieDetailActivity : AppCompatActivity() {
             .into(ivPoster)
 
         ivPoster.setOnClickListener {
-            // TODO SHOW POSTER DIALOG
-            Toast.makeText(
-                this@MovieDetailActivity,
-                "Poster clicked!",
-                Toast.LENGTH_SHORT
-            ).show()
+            movieDetails.posterPath?.let {
+                val dialog = MoviePosterDialog(it)
+                dialog.show(supportFragmentManager, "MoviePosterDialog")
+            }
         }
     }
 
@@ -181,10 +179,10 @@ class MovieDetailActivity : AppCompatActivity() {
 *   Handle specific errors (Looks like your device is not connected to the internet. Please make sure you are connected and try again!)
 *   Fix back pressed on HomeActivity and all screens that show favorite status
 *   Loading
+*   Add a search bar that allows searching on 2 or more fields of the movie object
 *
 *
 *
 *       Lazy load the images of the movie item component so they only appear once the component is visible
 *       Add at least one chart or graph representing anything you feel is helpful to the end user
-*       Add a search bar that allows searching on 2 or more fields of the movie object
 * */

@@ -116,12 +116,24 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/margin_default"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/pbInfiniteScroll"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appBar"
         tools:itemCount="10"
         tools:listitem="@layout/item_movie" />
+
+    <ProgressBar
+        android:id="@+id/pbInfiniteScroll"
+        android:layout_width="@dimen/medium_progress_bar_size"
+        android:layout_height="@dimen/medium_progress_bar_size"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:indeterminateTint="@color/blueMid"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivNoMovie"

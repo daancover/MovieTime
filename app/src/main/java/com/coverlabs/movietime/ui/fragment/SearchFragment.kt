@@ -11,6 +11,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doBeforeTextChanged
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.coverlabs.domain.model.Movie
 import com.coverlabs.domain.model.OrderBy
 import com.coverlabs.domain.model.OrderBy.*
@@ -27,7 +28,9 @@ import com.coverlabs.movietime.ui.activity.MovieDetailActivity
 import com.coverlabs.movietime.ui.adapter.LoadingMovieListAdapter
 import com.coverlabs.movietime.ui.adapter.MovieListAdapter
 import com.coverlabs.movietime.ui.helper.GridItemDecoration
+import com.coverlabs.movietime.ui.helper.InfiniteScrollListener
 import com.coverlabs.movietime.viewmodel.SearchViewModel
+import com.coverlabs.movietime.viewmodel.SearchViewModel.Companion.SEARCH_LIMIT
 import com.coverlabs.movietime.viewmodel.base.State
 import com.coverlabs.movietime.viewmodel.base.State.Status.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -106,6 +109,13 @@ class SearchFragment : BaseFragment() {
         }
     }
 
+    override fun observeEvents() {
+        lifecycle.addObserver(viewModel)
+        viewModel.onMovieListResult().observe(viewLifecycleOwner, handleMovieList())
+        viewModel.onMovieListAddedResult().observe(viewLifecycleOwner, handleMovieListAdded())
+        viewModel.onGenreListResult().observe(viewLifecycleOwner, handleGenreList())
+    }
+
     private fun FragmentSearchBinding.onExpandClickListener() {
         cbExpand.setOnCheckedChangeListener { _, isChecked ->
             etGenre.setText("")
@@ -158,12 +168,6 @@ class SearchFragment : BaseFragment() {
         }
     }
 
-    override fun observeEvents() {
-        lifecycle.addObserver(viewModel)
-        viewModel.onMovieListResult().observe(viewLifecycleOwner, handleMovieList())
-        viewModel.onGenreListResult().observe(viewLifecycleOwner, handleGenreList())
-    }
-
     private fun search(orderBy: OrderBy, sort: Sort) {
         with(binding) {
             viewModel.updateSortingPreferences(orderBy, sort)
@@ -190,6 +194,32 @@ class SearchFragment : BaseFragment() {
                 // do nothing
             }
         }
+    }
+
+    private fun handleMovieListAdded() = Observer<State<List<Movie>>> {
+        when (it.status) {
+            LOADING -> {
+                showInfiniteScrollLoading(true)
+            }
+            SUCCESS -> {
+                it.dataIfNotHandled?.let { movieList ->
+                    addMovies(movieList)
+                }
+            }
+            ERROR -> {
+                showInfiniteScrollLoading(false)
+                it.error?.let { error ->
+                    requireContext().handleErrors(error)
+                }
+            }
+            else -> {
+                // do nothing
+            }
+        }
+    }
+
+    private fun showInfiniteScrollLoading(visible: Boolean) {
+        binding.pbInfiniteScroll.isVisible = visible
     }
 
     private fun handleGenreList() = Observer<State<List<String>>> {
@@ -231,11 +261,15 @@ class SearchFragment : BaseFragment() {
     private fun setupMovieList(movieList: List<Movie>) {
         with(binding) {
             if (movieList.isNotEmpty()) {
-                rvMovieList.layoutManager = GridLayoutManager(context, GRID_LAYOUT_COLUMNS)
+                val gridLayoutManager = GridLayoutManager(context, GRID_LAYOUT_COLUMNS)
+                rvMovieList.layoutManager = gridLayoutManager
 
                 if (rvMovieList.itemDecorationCount == 0) {
                     rvMovieList.addItemDecoration(GridItemDecoration())
                 }
+
+                rvMovieList.clearOnScrollListeners()
+                rvMovieList.addOnScrollListener(createInfiniteScrollListener(gridLayoutManager))
 
                 val isFavoriteList = viewModel.isFavoriteList(movieList)
                 rvMovieList.adapter = MovieListAdapter(
@@ -252,6 +286,14 @@ class SearchFragment : BaseFragment() {
                 gpNoMovie.isVisible = true
                 rvMovieList.isVisible = false
             }
+        }
+    }
+
+    private fun addMovies(movieList: List<Movie>) {
+        with(binding) {
+            showInfiniteScrollLoading(false)
+            val isFavoriteList = viewModel.isFavoriteList(movieList)
+            (rvMovieList.adapter as? MovieListAdapter)?.addMovies(movieList, isFavoriteList)
         }
     }
 
@@ -286,6 +328,25 @@ class SearchFragment : BaseFragment() {
     private fun onFavoriteStatusChange(): (Boolean, Movie) -> Unit = { favorite, movie ->
         viewModel.changeFavoriteStatus(favorite, movie)
     }
+
+    private fun createInfiniteScrollListener(gridLayoutManager: GridLayoutManager) =
+        object : InfiniteScrollListener(gridLayoutManager) {
+            override fun onLoadMore(
+                currentPage: Int,
+                totalItemCount: Int,
+                recyclerView: RecyclerView
+            ) {
+                if (currentPage > 0) {
+                    with(binding) {
+                        viewModel.fetchMoreMovies(
+                            etSearch.text.toString(),
+                            etGenre.text.toString(),
+                            SEARCH_LIMIT * currentPage
+                        )
+                    }
+                }
+            }
+        }
 
     companion object {
         const val SEARCH_DELAY = 1000L

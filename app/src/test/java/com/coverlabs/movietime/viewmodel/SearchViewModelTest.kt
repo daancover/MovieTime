@@ -5,6 +5,7 @@ import com.coverlabs.domain.model.Movie
 import com.coverlabs.domain.repository.MovieRepository
 import com.coverlabs.domain.repository.StorageRepository
 import com.coverlabs.movietime.core.BaseCoroutineTest
+import com.coverlabs.movietime.viewmodel.SearchViewModel.Companion.SEARCH_LIMIT
 import com.coverlabs.movietime.viewmodel.base.State
 import com.coverlabs.movietime.viewmodel.base.State.Status.LOADING
 import com.coverlabs.movietime.viewmodel.base.State.Status.SUCCESS
@@ -53,7 +54,7 @@ class SearchViewModelTest : BaseCoroutineTest() {
 
             viewModel.getAllMovies()
 
-            verify(movieRepository).searchMovies()
+            verify(movieRepository).searchMovies(limit = SEARCH_LIMIT)
         }
     }
 
@@ -87,6 +88,47 @@ class SearchViewModelTest : BaseCoroutineTest() {
     }
 
     @Test
+    fun fetchMoreMovies_callsCorrectRepository() {
+        testCoroutineRule.runBlockingTest {
+            val expectedValue = emptyList<Movie>()
+            stubSearchMovies(expectedValue)
+
+            viewModel.fetchMoreMovies()
+
+            verify(movieRepository).searchMovies(limit = SEARCH_LIMIT)
+        }
+    }
+
+    @Test
+    fun fetchMoreMovies_answersCorrectLiveData() {
+        viewModel.onMovieListAddedResult().observeForever(movieListObserver)
+
+        testCoroutineRule.runBlockingTest {
+            pauseDispatcher()
+            val expectedValue = emptyList<Movie>()
+            stubSearchMovies(expectedValue)
+
+            viewModel.fetchMoreMovies()
+
+            movieListCaptor.run {
+                verify(movieListObserver, times(1)).onChanged(capture())
+                assert(value.status == LOADING)
+                assert(value.data == null)
+                assert(value.error == null)
+
+                resumeDispatcher()
+
+                verify(movieListObserver, times(2)).onChanged(capture())
+                assert(value.status == SUCCESS)
+                assert(value.data == expectedValue)
+                assert(value.error == null)
+            }
+        }
+
+        viewModel.onMovieListAddedResult().removeObserver(movieListObserver)
+    }
+
+    @Test
     fun searchMovie_callsCorrectRepository() {
         testCoroutineRule.runBlockingTest {
             val expectedValue = emptyList<Movie>()
@@ -94,7 +136,7 @@ class SearchViewModelTest : BaseCoroutineTest() {
 
             viewModel.searchMovie()
 
-            verify(movieRepository).searchMovies()
+            verify(movieRepository).searchMovies(limit = SEARCH_LIMIT)
         }
     }
 
@@ -169,7 +211,7 @@ class SearchViewModelTest : BaseCoroutineTest() {
     }
 
     private suspend fun stubSearchMovies(expectedValue: List<Movie>) {
-        `when`(movieRepository.searchMovies()).thenReturn(expectedValue)
+        `when`(movieRepository.searchMovies(limit = SEARCH_LIMIT)).thenReturn(expectedValue)
     }
 
     private suspend fun stubGenreList(expectedValue: List<String>) {
