@@ -161,28 +161,3 @@ class MovieDetailActivity : AppCompatActivity() {
         }
     }
 }
-
-/*
-* TODO LIST
-*   Optional:
-*       Infinite scroll and pagination
-*       Add functionality where clicking on an image preview in the first section expands the image in a modal
-*
-*   Top 5 movies layout
-*   Search by Genre
-*   Browse by all and search by "title"
-*   Make SearchActivity display all movies when search length < 2
-*   Order by "title" or "popularity"
-*   App icon
-*   Movie detail layout (title, voteAverage, voteCount, genres, posterPath, overview, cast, director)
-*       Pressing a genre navigates to a new view showing the category and associated movies
-*   Handle specific errors (Looks like your device is not connected to the internet. Please make sure you are connected and try again!)
-*   Fix back pressed on HomeActivity and all screens that show favorite status
-*   Loading
-*   Add a search bar that allows searching on 2 or more fields of the movie object
-*
-*
-*
-*       Lazy load the images of the movie item component so they only appear once the component is visible
-*       Add at least one chart or graph representing anything you feel is helpful to the end user
-* */

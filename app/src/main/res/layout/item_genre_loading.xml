@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/tvGenre"
         android:layout_width="match_parent"
-        android:background="@color/gray"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_xlarge" />
+        android:layout_marginEnd="@dimen/margin_xlarge"
+        android:background="@color/gray" />
 </com.facebook.shimmer.ShimmerFrameLayout>

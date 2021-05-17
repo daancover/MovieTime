@@ -1,7 +1,6 @@
 package com.coverlabs.movietime.viewmodel
 
 import androidx.lifecycle.Observer
-import com.coverlabs.domain.model.Movie
 import com.coverlabs.domain.repository.MovieRepository
 import com.coverlabs.movietime.core.BaseCoroutineTest
 import com.coverlabs.movietime.viewmodel.base.State

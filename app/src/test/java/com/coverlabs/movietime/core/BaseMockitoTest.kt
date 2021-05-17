@@ -1,6 +1,5 @@
 package com.coverlabs.movietime.core
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import org.junit.Before
 import org.junit.Rule
 import org.junit.runner.RunWith

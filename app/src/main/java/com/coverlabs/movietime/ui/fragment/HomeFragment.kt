@@ -14,8 +14,8 @@ import com.coverlabs.movietime.extension.handleErrors
 import com.coverlabs.movietime.extension.setupCarousel
 import com.coverlabs.movietime.extension.setupSideTouchEvent
 import com.coverlabs.movietime.ui.activity.MovieDetailActivity
-import com.coverlabs.movietime.ui.adapter.MovieListAdapter
 import com.coverlabs.movietime.ui.adapter.LoadingMovieListAdapter
+import com.coverlabs.movietime.ui.adapter.MovieListAdapter
 import com.coverlabs.movietime.ui.helper.HorizontalListItemDecoration
 import com.coverlabs.movietime.viewmodel.HomeViewModel
 import com.coverlabs.movietime.viewmodel.base.State
