@@ -8,8 +8,7 @@ import androidx.annotation.StringRes
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.coverlabs.di.error.Error
-import com.coverlabs.di.error.Error.DeviceNotConnected
-import com.coverlabs.di.error.Error.GenericError
+import com.coverlabs.di.error.Error.*
 import com.coverlabs.movietime.R
 import com.coverlabs.movietime.databinding.BottomSheetListBinding
 import com.coverlabs.movietime.ui.adapter.GenreListAdapter
@@ -38,14 +37,24 @@ fun Context.showDialog(
     }
 }
 
-fun Context.handleErrors(error: Error): Boolean {
+fun Context.handleError(
+    error: Error,
+    positiveButtonClick: (dialog: DialogInterface, which: Int) -> Unit = { _, _ -> },
+): Boolean {
     return when (error) {
         is DeviceNotConnected -> {
-            showDialog(message = R.string.device_not_connected_message)
+            showDialog(
+                message = R.string.device_not_connected_message,
+                positiveButtonText = R.string.try_again_error_button,
+                positiveButtonClick = positiveButtonClick
+            )
             true
         }
         is GenericError -> {
-            showDialog()
+            showDialog(
+                positiveButtonText = R.string.try_again_error_button,
+                positiveButtonClick = positiveButtonClick
+            )
             true
         }
         else -> {

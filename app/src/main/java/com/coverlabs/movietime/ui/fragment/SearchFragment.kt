@@ -21,7 +21,7 @@ import com.coverlabs.domain.model.Sort.DESC
 import com.coverlabs.movietime.MovieTimeApplication.Companion.GRID_LAYOUT_COLUMNS
 import com.coverlabs.movietime.R
 import com.coverlabs.movietime.databinding.FragmentSearchBinding
-import com.coverlabs.movietime.extension.handleErrors
+import com.coverlabs.movietime.extension.handleError
 import com.coverlabs.movietime.extension.setSupportActionBar
 import com.coverlabs.movietime.extension.showBottomSheetDialog
 import com.coverlabs.movietime.ui.activity.MovieDetailActivity
@@ -187,7 +187,7 @@ class SearchFragment : BaseFragment() {
             }
             ERROR -> {
                 it.error?.let { error ->
-                    requireContext().handleErrors(error)
+                    requireContext().handleError(error)
                 }
             }
             else -> {
@@ -209,7 +209,7 @@ class SearchFragment : BaseFragment() {
             ERROR -> {
                 showInfiniteScrollLoading(false)
                 it.error?.let { error ->
-                    requireContext().handleErrors(error)
+                    requireContext().handleError(error)
                 }
             }
             else -> {
@@ -249,7 +249,7 @@ class SearchFragment : BaseFragment() {
             ERROR -> {
                 binding.pbGenre.isVisible = false
                 it.error?.let { error ->
-                    requireContext().handleErrors(error)
+                    requireContext().handleError(error)
                 }
             }
             else -> {

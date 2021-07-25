@@ -15,7 +15,7 @@ import com.coverlabs.domain.model.Sort
 import com.coverlabs.movietime.MovieTimeApplication.Companion.GRID_LAYOUT_COLUMNS
 import com.coverlabs.movietime.R
 import com.coverlabs.movietime.databinding.ActivityGenreBinding
-import com.coverlabs.movietime.extension.handleErrors
+import com.coverlabs.movietime.extension.handleError
 import com.coverlabs.movietime.ui.adapter.LoadingMovieListAdapter
 import com.coverlabs.movietime.ui.adapter.MovieListAdapter
 import com.coverlabs.movietime.ui.helper.GridItemDecoration
@@ -109,7 +109,7 @@ class GenreActivity : AppCompatActivity() {
             }
             ERROR -> {
                 it.error?.let { error ->
-                    handleErrors(error)
+                    handleError(error)
                 }
             }
             else -> {

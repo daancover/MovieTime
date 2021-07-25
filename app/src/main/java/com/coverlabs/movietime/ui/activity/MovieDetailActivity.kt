@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.coverlabs.domain.model.Movie
 import com.coverlabs.domain.model.MovieDetails
 import com.coverlabs.movietime.databinding.ActivityMovieDetailBinding
-import com.coverlabs.movietime.extension.handleErrors
+import com.coverlabs.movietime.extension.handleError
 import com.coverlabs.movietime.ui.adapter.CastListAdapter
 import com.coverlabs.movietime.ui.adapter.GenreListAdapter
 import com.coverlabs.movietime.ui.adapter.LoadingCastListAdapter
@@ -67,7 +67,7 @@ class MovieDetailActivity : AppCompatActivity() {
             }
             ERROR -> {
                 it.error?.let { error ->
-                    handleErrors(error)
+                    handleError(error)
                 }
             }
             else -> {

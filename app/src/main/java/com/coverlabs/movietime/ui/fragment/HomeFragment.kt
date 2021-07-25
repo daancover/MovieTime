@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.coverlabs.domain.model.Movie
 import com.coverlabs.movietime.databinding.FragmentHomeBinding
-import com.coverlabs.movietime.extension.handleErrors
+import com.coverlabs.movietime.extension.handleError
 import com.coverlabs.movietime.extension.setupCarousel
 import com.coverlabs.movietime.extension.setupSideTouchEvent
 import com.coverlabs.movietime.ui.activity.MovieDetailActivity
@@ -70,7 +70,9 @@ class HomeFragment : BaseFragment() {
             }
             ERROR -> {
                 it.error?.let { error ->
-                    requireContext().handleErrors(error)
+                    requireContext().handleError(error) { _, _ ->
+                        viewModel.getTopFiveMovies()
+                    }
                 }
             }
             else -> {

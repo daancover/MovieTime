@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.coverlabs.movietime.databinding.FragmentGenreBinding
-import com.coverlabs.movietime.extension.handleErrors
+import com.coverlabs.movietime.extension.handleError
 import com.coverlabs.movietime.ui.activity.GenreActivity
 import com.coverlabs.movietime.ui.adapter.GenreListAdapter
 import com.coverlabs.movietime.ui.adapter.LoadingGenreListAdapter
@@ -53,7 +53,7 @@ class GenreListFragment : BaseFragment() {
             }
             ERROR -> {
                 it.error?.let { error ->
-                    requireContext().handleErrors(error)
+                    requireContext().handleError(error)
                 }
             }
             else -> {

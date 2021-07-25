@@ -12,8 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieTime">
-        <activity android:name=".ui.activity.GenreActivity"></activity>
-        <activity android:name=".ui.activity.MovieDetailActivity"></activity>
+
         <activity android:name=".ui.activity.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <activity android:name=".ui.activity.GenreActivity" />
+        <activity android:name=".ui.activity.MovieDetailActivity" />
+    </application>
 </manifest>
